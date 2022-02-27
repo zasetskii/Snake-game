@@ -12,7 +12,8 @@ Snake::Snake(QWidget *parent)
     m_timer = new QTimer(this);
     m_score = new QLabel("0");
 
-    m_leaderboard_model = new QStandardItemModel(0, 2, this);
+    //m_leaderboard_model = new QStandardItemModel(0, 2, this);
+    m_leaderboard_model = new RecordListModel(this);
 
     setLeaderboard();
 
@@ -159,15 +160,15 @@ void Snake::gameOver(QPainter& painter)
 
 void Snake::saveResult()
 {
-    m_leaderboard_model->appendRow({new QStandardItem("Name"), new QStandardItem(m_score->text())});
+    m_leaderboard_model->addRecord("Name", m_score->text().toInt());
     m_leaderboard_model->sort(1, Qt::DescendingOrder);
     const int size_of_board = std::min(m_leaderboard_model->rowCount(), 10);
     QJsonArray j_arr;
     for(int i = 0; i < size_of_board; ++i)
     {
         QJsonObject jRecord;
-        jRecord["name"] = m_leaderboard_model->item(i, 0)->text();
-        jRecord["score"] = m_leaderboard_model->item(i, 1)->text();
+        jRecord["name"] = m_leaderboard_model->name(i);
+        jRecord["score"] = m_leaderboard_model->score(i);
         j_arr.append(jRecord);
     }
     QJsonDocument j_document(j_arr);
@@ -191,13 +192,13 @@ void Snake::setLeaderboard()
         QByteArray data = scoreboard.readAll();
         QJsonDocument document = QJsonDocument::fromJson(data);
         QJsonArray j_arr = document.array();
-        qDebug() << j_arr;
         for(int i = 0; i < j_arr.size(); ++i)
         {
             QString name = j_arr.at(i)["name"].toString();
-            QString score = j_arr.at(i)["score"].toString();
-            m_leaderboard_model->appendRow({new QStandardItem(name), new QStandardItem(score)});
+            int score = j_arr.at(i)["score"].toInt();
+            m_leaderboard_model->addRecord(name, score);
         }
+        m_leaderboard_model->sort(1, Qt::DescendingOrder);
     }
     else
     {
@@ -206,7 +207,7 @@ void Snake::setLeaderboard()
     scoreboard.close();
 }
 
-QStandardItemModel* Snake::getLeaderboardModel()
+RecordListModel* Snake::getLeaderboardModel()
 {
     return m_leaderboard_model;
 }

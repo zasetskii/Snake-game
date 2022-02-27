@@ -16,13 +16,12 @@
 #include <QTextStream>
 #include <QFile>
 #include <QMap>
-#include <QStandardItemModel>
-
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QJsonArray>
 
 #include "app.h"
+#include "recordlistmodel.h"
 
 class Snake : public QWidget
 {
@@ -44,7 +43,7 @@ class Snake : public QWidget
     void gameOver(QPainter&);
     void saveResult();
     void setLeaderboard();
-    QStandardItemModel* getLeaderboardModel();
+    RecordListModel* getLeaderboardModel();
     void generateApple();
     void processKeyPressed();
 
@@ -89,7 +88,7 @@ private:
     QTimer* m_timer;
     QQueue<int> m_key_q;
 
-    QStandardItemModel* m_leaderboard_model;
+    RecordListModel* m_leaderboard_model;
 
     int delay;
     Directions cur_direction;

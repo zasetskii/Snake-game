@@ -13,6 +13,7 @@ SOURCES += \
     leaderboard.cpp \
     main.cpp \
     menuscreen.cpp \
+    recordlistmodel.cpp \
     settings.cpp \
     snake.cpp
 
@@ -20,6 +21,7 @@ HEADERS += \
     app.h \
     leaderboard.h \
     menuscreen.h \
+    recordlistmodel.h \
     settings.h \
     snake.h
 
