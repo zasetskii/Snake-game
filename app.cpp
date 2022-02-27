@@ -4,7 +4,7 @@
 #include "settings.h"
 #include "leaderboard.h"
 
-App::App(QWidget *parent) : QMainWindow(parent)
+App::App(QWidget *parent) : QMainWindow(parent), m_size(300, 350)
 {
     game = new Snake(this);
     menu_screen = new MenuScreen(this);
@@ -12,13 +12,17 @@ App::App(QWidget *parent) : QMainWindow(parent)
     settings_screen = new Settings(this);
     leaderboard = new Leaderboard(this);
 
-    resize(300, 350);
+    resize(m_size);
+    setMinimumSize(m_size);
+    setMaximumSize(m_size);
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
     stacked_widget->addWidget(menu_screen);
     stacked_widget->addWidget(settings_screen);
     stacked_widget->addWidget(game);
     stacked_widget->addWidget(leaderboard);
     setCentralWidget(stacked_widget);
-    statusBar()->addWidget(game->score);
+    statusBar()->addWidget(game->m_score);
     makeDifficultyMenu();
     makeColorMenu();
     game->setDifficultyMedium();
@@ -33,7 +37,6 @@ App::App(QWidget *parent) : QMainWindow(parent)
     connect(menu_screen->open_settings_btn, &QPushButton::pressed, this, &App::openSettings);
     connect(menu_screen->quit_game_btn, &QPushButton::pressed, qApp, QApplication::quit);
     connect(menu_screen->continue_game_btn, &QPushButton::pressed, this, &App::continueGame);
-    //connect(settings_screen->difficulty_cmb, SIGNAL(currentIndexChanged(int)), game, SLOT(setDifficulty(int)));
     connect(settings_screen->difficulty_cmb, QOverload<int>::of(&QComboBox::currentIndexChanged), game, &Snake::setDifficulty);
     connect(settings_screen->background_color_cmb, QOverload<int>::of(&QComboBox::currentIndexChanged), game, &Snake::setBackgroundColor);
     connect(settings_screen->snake_color_cmb, QOverload<int>::of(&QComboBox::currentIndexChanged), game, &Snake::setSnakeColor);
@@ -124,7 +127,7 @@ void App::showMenu()
 
 void App::continueGame()
 {
-    game->timer->start(game->delay);
+    game->m_timer->start(game->delay);
     statusBar()->show();
     menuBar()->setVisible(true);
     stacked_widget->setCurrentWidget(game);
@@ -143,17 +146,7 @@ void App::openLeaderboard()
 {
     statusBar()->hide();
     menuBar()->setVisible(false);
-    //Очищаем доску перед заполнением (чтобы не дублировать уже вписанные результаты)
-    leaderboard->clearBoard();
-    QMap<int, QString> list_of_scores = game->getLeaderboard();
-    QMap<int, QString>::const_iterator it = list_of_scores.constEnd();
-    --it;
-    const int size_of_board = std::min(list_of_scores.size(), 10);
-    for (int i = 0; i < size_of_board; ++i, --it)
-    {
-        QString cur_line = it.value() + " " + QString::number(it.key());
-        leaderboard->addScore(cur_line);
-    }
+    leaderboard->m_table_view->setModel(game->getLeaderboardModel());
     stacked_widget->setCurrentWidget(leaderboard);
 }
 

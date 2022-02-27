@@ -1,25 +1,28 @@
 #include "snake.h"
+#include <QDebug>
 
 #define DELAY 100
-#define DOT_SIZE 10
+#define DOT_SIZE 10 //размер одной клетки поля
 
 Snake::Snake(QWidget *parent)
-    : QWidget(parent)
+    : QWidget(parent), m_size(300, 300)
 {
-    head.load("../game/images/head.png");
+    m_head.load("../game/images/head.png");
 
-    timer = new QTimer(this);
-    score = new QLabel("0");
+    m_timer = new QTimer(this);
+    m_score = new QLabel("0");
+
+    m_leaderboard_model = new QStandardItemModel(0, 2, this);
 
     setLeaderboard();
 
     setAutoFillBackground(true);
-    resize(300, 300);
-    setMinimumSize(300, 300);
-    setMaximumSize(300, 300);
+    resize(m_size);
+    setMinimumSize(m_size);
+    setMaximumSize(m_size);
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    connect(timer, &QTimer::timeout, this, &Snake::onTimer);
+    connect(m_timer, &QTimer::timeout, this, &Snake::onTimer);
 }
 
 void Snake::paintEvent(QPaintEvent* event)
@@ -27,12 +30,12 @@ void Snake::paintEvent(QPaintEvent* event)
     Q_UNUSED(event);
 
     QPainter painter(this);
-    painter.drawImage(coordinates[0], head);
-    for (int i = 1; i < coordinates.size(); ++i)
+    painter.drawImage(m_coordinates[0], m_head);
+    for (int i = 1; i < m_coordinates.size(); ++i)
     {
-        painter.drawImage(coordinates[i], dot);
+        painter.drawImage(m_coordinates[i], m_dot);
     }
-    painter.drawImage(apple_coordinates, apple);
+    painter.drawImage(m_apple_coordinates, m_apple);
     if (is_game_over)
         gameOver(painter);
 }
@@ -43,36 +46,36 @@ void Snake::onTimer()
 
     if (is_growing)
     {
-        coordinates.push_back(coordinates[coordinates.size() - 1]);
-        for (int i = coordinates.size() - 2; i != 0; --i)
+        m_coordinates.push_back(m_coordinates[m_coordinates.size() - 1]);
+        for (int i = m_coordinates.size() - 2; i != 0; --i)
         {
-            coordinates[i] = coordinates[i - 1];
+            m_coordinates[i] = m_coordinates[i - 1];
         }
         is_growing = false;
     }
     else
     {
-        for (int i = coordinates.size() - 1; i != 0; --i)
+        for (int i = m_coordinates.size() - 1; i != 0; --i)
         {
-            coordinates[i] = coordinates[i - 1];
+            m_coordinates[i] = m_coordinates[i - 1];
         }
     }
 
     if (cur_direction == DIRECTION_UP)
     {
-        coordinates[0].ry() -= DOT_SIZE;
+        m_coordinates[0].ry() -= DOT_SIZE;
     }
     else if (cur_direction == DIRECTION_DOWN)
     {
-        coordinates[0].ry() += DOT_SIZE;
+        m_coordinates[0].ry() += DOT_SIZE;
     }
     else if (cur_direction == DIRECTION_LEFT)
     {
-        coordinates[0].rx() -= DOT_SIZE;
+        m_coordinates[0].rx() -= DOT_SIZE;
     }
     else if (cur_direction == DIRECTION_RIGHT)
     {
-        coordinates[0].rx() += DOT_SIZE;
+        m_coordinates[0].rx() += DOT_SIZE;
     }
     else
         return;
@@ -89,7 +92,7 @@ void Snake::keyPressEvent(QKeyEvent *event)
     switch(event->key())
     {
     case Qt::Key_Escape:
-        timer->stop();
+        m_timer->stop();
         emit escPressed();
         return;
     case Qt::Key_Space:
@@ -99,14 +102,14 @@ void Snake::keyPressEvent(QKeyEvent *event)
         break;
     }
 
-    key_q.enqueue(event->key());
+    m_key_q.enqueue(event->key());
 }
 
 void Snake::processKeyPressed()
 {
-    if (key_q.isEmpty())
+    if (m_key_q.isEmpty())
         return;
-    switch(key_q.dequeue())
+    switch(m_key_q.dequeue())
     {
     case Qt::Key_Up:
         if (cur_direction != DIRECTION_DOWN)
@@ -131,14 +134,14 @@ void Snake::processKeyPressed()
 
 void Snake::checkBorders()
 {
-    if (coordinates[0].x() < 0 || coordinates[0].x() > this->width() - DOT_SIZE ||
-        coordinates[0].y() < 0 || coordinates[0].y() > this->height() - DOT_SIZE)
+    if (m_coordinates[0].x() < 0 || m_coordinates[0].x() > this->width() - DOT_SIZE ||
+        m_coordinates[0].y() < 0 || m_coordinates[0].y() > this->height() - DOT_SIZE)
     {
         is_game_over = true;
     }
-    for (int i = 1; i < coordinates.size(); ++i)
+    for (int i = 1; i < m_coordinates.size(); ++i)
     {
-        if (coordinates[0] == coordinates[i])
+        if (m_coordinates[0] == m_coordinates[i])
         {
             is_game_over = true;
             break;
@@ -149,25 +152,29 @@ void Snake::checkBorders()
 void Snake::gameOver(QPainter& painter)
 {
     painter.drawText(width()/2, height()/2, "Game over!");
-    timer->stop();
+    m_timer->stop();
     saveResult();
     emit gameIsOver();
 }
 
 void Snake::saveResult()
 {
-    leaderboard[score->text().toInt()] = "Name";
+    m_leaderboard_model->appendRow({new QStandardItem("Name"), new QStandardItem(m_score->text())});
+    m_leaderboard_model->sort(1, Qt::DescendingOrder);
+    const int size_of_board = std::min(m_leaderboard_model->rowCount(), 10);
+    QJsonArray j_arr;
+    for(int i = 0; i < size_of_board; ++i)
+    {
+        QJsonObject jRecord;
+        jRecord["name"] = m_leaderboard_model->item(i, 0)->text();
+        jRecord["score"] = m_leaderboard_model->item(i, 1)->text();
+        j_arr.append(jRecord);
+    }
+    QJsonDocument j_document(j_arr);
     QFile file("../game/scoreboard.txt");
     if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
     {
-        QTextStream out_stream(&file);
-        QMap<int, QString>::const_iterator it = leaderboard.constEnd();
-        --it;
-        const int size_of_board = std::min(leaderboard.size(), 10);
-        for (int i = 0; i < size_of_board; ++i, --it)
-        {
-            out_stream << it.key() << " " << it.value() << endl;
-        }
+        file.write(j_document.toJson());
     }
     else
     {
@@ -181,14 +188,15 @@ void Snake::setLeaderboard()
     QFile scoreboard("../game/scoreboard.txt");
     if (scoreboard.open(QIODevice::ReadOnly))
     {
-        QTextStream file_stream(&scoreboard);
-        while(!file_stream.atEnd())
+        QByteArray data = scoreboard.readAll();
+        QJsonDocument document = QJsonDocument::fromJson(data);
+        QJsonArray j_arr = document.array();
+        qDebug() << j_arr;
+        for(int i = 0; i < j_arr.size(); ++i)
         {
-            QString cur_line = file_stream.readLine();
-            QStringList key_and_value = cur_line.split(' ', QString::SkipEmptyParts);
-            int key = key_and_value.at(0).toInt();
-            QString value = key_and_value.at(1);
-            leaderboard.insert(key, value);
+            QString name = j_arr.at(i)["name"].toString();
+            QString score = j_arr.at(i)["score"].toString();
+            m_leaderboard_model->appendRow({new QStandardItem(name), new QStandardItem(score)});
         }
     }
     else
@@ -198,9 +206,9 @@ void Snake::setLeaderboard()
     scoreboard.close();
 }
 
-QMap<int, QString> Snake::getLeaderboard()
+QStandardItemModel* Snake::getLeaderboardModel()
 {
-    return leaderboard;
+    return m_leaderboard_model;
 }
 
 void Snake::generateApple()
@@ -211,9 +219,9 @@ void Snake::generateApple()
         position.rx() = QRandomGenerator::global()->bounded((width() - DOT_SIZE) / DOT_SIZE ) * DOT_SIZE;
         position.ry() = QRandomGenerator::global()->bounded((height() - DOT_SIZE) / DOT_SIZE ) * DOT_SIZE;
         bool intersects = false;
-        for (int i = 0; i < coordinates.size(); ++i)
+        for (int i = 0; i < m_coordinates.size(); ++i)
         {
-            if (coordinates[i] == position)
+            if (m_coordinates[i] == position)
             {
                 intersects = true;
                 break;
@@ -222,33 +230,33 @@ void Snake::generateApple()
         if (!intersects)
             break;
     }
-    apple_coordinates = position;
+    m_apple_coordinates = position;
 }
 
 void Snake::checkApple()
 {
-    if (coordinates[0] == apple_coordinates)
+    if (m_coordinates[0] == m_apple_coordinates)
     {
         generateApple();
         is_growing = true;
-        score->setNum( score->text().toInt() + 1);
+        m_score->setNum(m_score->text().toInt() + 1);
     }
 }
 
 void Snake::startNewGame()
 {
-    key_q.erase(key_q.begin(), key_q.end());
-    coordinates.erase(coordinates.begin(), coordinates.end());
-    coordinates.push_back({width() / 2, height() / 2});
-    coordinates.push_back({width() / 2 + DOT_SIZE, height() / 2});
-    coordinates.push_back({width() / 2 + (2 * DOT_SIZE), height() / 2});
-    coordinates.push_back({width() / 2 + (3 * DOT_SIZE), height() / 2});
-    score->setNum(coordinates.size());
+    m_key_q.erase(m_key_q.begin(), m_key_q.end());
+    m_coordinates.erase(m_coordinates.begin(), m_coordinates.end());
+    m_coordinates.push_back({width() / 2, height() / 2});
+    m_coordinates.push_back({width() / 2 + DOT_SIZE, height() / 2});
+    m_coordinates.push_back({width() / 2 + (2 * DOT_SIZE), height() / 2});
+    m_coordinates.push_back({width() / 2 + (3 * DOT_SIZE), height() / 2});
+    m_score->setNum(m_coordinates.size());
     generateApple();
 
     cur_direction = DIRECTION_LEFT;
     is_game_over = false;
-    timer->start(delay);
+    m_timer->start(delay);
 }
 
 void Snake::setDifficultyEasy()
@@ -315,17 +323,17 @@ void Snake::setBackgroundColor(int index)
 
 void Snake::setSnakeGreen()
 {
-    dot.load("../game/images/dot_green.png");
+    m_dot.load("../game/images/dot_green.png");
 }
 
 void Snake::setSnakeBlack()
 {
-    dot.load("../game/images/dot_black.png");
+    m_dot.load("../game/images/dot_black.png");
 }
 
 void Snake::setSnakeWhite()
 {
-    dot.load("../game/images/dot_white.png");
+    m_dot.load("../game/images/dot_white.png");
 }
 
 void Snake::setSnakeColor(int index)
@@ -346,12 +354,12 @@ void Snake::setSnakeColor(int index)
 
 void Snake::setAppleYellow()
 {
-    apple.load("../game/images/apple_yellow.png");
+    m_apple.load("../game/images/apple_yellow.png");
 }
 
 void Snake::setAppleGreen()
 {
-    apple.load("../game/images/apple_green.png");
+    m_apple.load("../game/images/apple_green.png");
 }
 
 void Snake::setAppleColor(int index)

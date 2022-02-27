@@ -41,6 +41,9 @@ public:
 protected:
     void keyPressEvent(QKeyEvent* event);
 
+private:
+    QSize m_size;
+
 };
 
 #endif // APP_H

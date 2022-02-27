@@ -16,6 +16,11 @@
 #include <QTextStream>
 #include <QFile>
 #include <QMap>
+#include <QStandardItemModel>
+
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonArray>
 
 #include "app.h"
 
@@ -25,14 +30,6 @@ class Snake : public QWidget
 
     friend App;
 
-    QImage head;
-    QImage dot;
-    QImage apple;
-    QVector<QPoint> coordinates;
-    QPoint apple_coordinates;
-    QLabel* score;
-    int delay;
-
     enum Directions
     {
         DIRECTION_UP,
@@ -41,20 +38,13 @@ class Snake : public QWidget
         DIRECTION_RIGHT
     };
 
-    Directions cur_direction;
-    QTimer* timer;
-    bool is_game_over = false;
-    bool is_growing = false;
-    QQueue<int> key_q;
-    QMap<int, QString> leaderboard;
-
     void startNewGame();
     void checkBorders();
     void checkApple();
     void gameOver(QPainter&);
     void saveResult();
     void setLeaderboard();
-    QMap<int, QString> getLeaderboard();
+    QStandardItemModel* getLeaderboardModel();
     void generateApple();
     void processKeyPressed();
 
@@ -88,5 +78,23 @@ private slots:
 protected:
     void paintEvent(QPaintEvent* event);
     void keyPressEvent(QKeyEvent* event);
+
+private:
+    QImage m_head;
+    QImage m_dot;
+    QImage m_apple;
+    QVector<QPoint> m_coordinates;
+    QPoint m_apple_coordinates;
+    QLabel* m_score;
+    QTimer* m_timer;
+    QQueue<int> m_key_q;
+
+    QStandardItemModel* m_leaderboard_model;
+
+    int delay;
+    Directions cur_direction;
+    bool is_game_over = false;
+    bool is_growing = false;
+    QSize m_size;
 };
 #endif // SNAKE_H

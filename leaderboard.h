@@ -2,9 +2,10 @@
 #define LEADERBOARD_H
 
 #include <QWidget>
-#include <QGroupBox>
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QTableView>
+#include <QHeaderView>
 
 #include "app.h"
 
@@ -14,13 +15,10 @@ class Leaderboard : public QWidget
 public:
     explicit Leaderboard(QWidget *parent = nullptr);
 
-    QGroupBox* group_box;
-    QVBoxLayout* layout;
     QVBoxLayout* main_layout;
     QPushButton* back_to_menu_btn;
 
-    void addScore(QString score);
-    void clearBoard();
+    QTableView* m_table_view;
 
 signals:
 
