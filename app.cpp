@@ -4,9 +4,14 @@
 #include "settings.h"
 #include "leaderboard.h"
 
-App::App(QWidget *parent) : QMainWindow(parent), game(new Snake(this)), menu_screen(new MenuScreen(this)),
-                            stacked_widget(new QStackedWidget), settings_screen(new Settings(this)), leaderboard(new Leaderboard(this))
+App::App(QWidget *parent) : QMainWindow(parent)
 {
+    game = new Snake(this);
+    menu_screen = new MenuScreen(this);
+    stacked_widget = new QStackedWidget;
+    settings_screen = new Settings(this);
+    leaderboard = new Leaderboard(this);
+
     resize(300, 350);
     stacked_widget->addWidget(menu_screen);
     stacked_widget->addWidget(settings_screen);
@@ -23,19 +28,20 @@ App::App(QWidget *parent) : QMainWindow(parent), game(new Snake(this)), menu_scr
 
     showMenu();
 
-    connect(menu_screen->start_game, &QPushButton::pressed, this, &App::startGame);
-    connect(menu_screen->open_leaderboard, &QPushButton::pressed, this, &App::openLeaderboard);
-    connect(menu_screen->open_settings, &QPushButton::pressed, this, &App::openSettings);
-    connect(menu_screen->quit_game, &QPushButton::pressed, qApp, QApplication::quit);
-    connect(menu_screen->continue_game, &QPushButton::pressed, this, &App::continueGame);
-    connect(settings_screen->difficulty, SIGNAL(currentIndexChanged(int)), game, SLOT(setDifficulty(int)));
-    connect(settings_screen->background_color, SIGNAL(currentIndexChanged(int)), game, SLOT(setBackgroundColor(int)));
-    connect(settings_screen->snake_color, SIGNAL(currentIndexChanged(int)), game, SLOT(setSnakeColor(int)));
-    connect(settings_screen->apple_color, SIGNAL(currentIndexChanged(int)), game, SLOT(setAppleColor(int)));
-    connect(settings_screen->back_to_menu, &QPushButton::pressed, this, &App::showMenu);
-    connect(leaderboard->back_to_menu, &QPushButton::pressed, this, &App::showMenu);
+    connect(menu_screen->start_game_btn, &QPushButton::pressed, this, &App::startGame);
+    connect(menu_screen->open_leaderboard_btn, &QPushButton::pressed, this, &App::openLeaderboard);
+    connect(menu_screen->open_settings_btn, &QPushButton::pressed, this, &App::openSettings);
+    connect(menu_screen->quit_game_btn, &QPushButton::pressed, qApp, QApplication::quit);
+    connect(menu_screen->continue_game_btn, &QPushButton::pressed, this, &App::continueGame);
+    //connect(settings_screen->difficulty_cmb, SIGNAL(currentIndexChanged(int)), game, SLOT(setDifficulty(int)));
+    connect(settings_screen->difficulty_cmb, QOverload<int>::of(&QComboBox::currentIndexChanged), game, &Snake::setDifficulty);
+    connect(settings_screen->background_color_cmb, QOverload<int>::of(&QComboBox::currentIndexChanged), game, &Snake::setBackgroundColor);
+    connect(settings_screen->snake_color_cmb, QOverload<int>::of(&QComboBox::currentIndexChanged), game, &Snake::setSnakeColor);
+    connect(settings_screen->apple_color_cmb, QOverload<int>::of(&QComboBox::currentIndexChanged), game, &Snake::setAppleColor);
+    connect(settings_screen->back_to_menu_btn, &QPushButton::pressed, this, &App::showMenu);
+    connect(leaderboard->back_to_menu_btn, &QPushButton::pressed, this, &App::showMenu);
     connect(game, &Snake::escPressed, this, &App::showMenu);
-    connect(game, &Snake::gameIsOver, menu_screen->continue_game, &QPushButton::hide);
+    connect(game, &Snake::gameIsOver, menu_screen->continue_game_btn, &QPushButton::hide);
 }
 
 void App::makeDifficultyMenu()
@@ -55,9 +61,9 @@ void App::makeDifficultyMenu()
     difficulty_menu->addAction(easy);
     difficulty_menu->addAction(medium);
     difficulty_menu->addAction(hard);
-    connect(easy, SIGNAL(triggered()), game, SLOT(setDifficultyEasy()));
-    connect(medium, SIGNAL(triggered()), game, SLOT(setDifficultyMedium()));
-    connect(hard, SIGNAL(triggered()), game, SLOT(setDifficultyHard()));
+    connect(easy, &QAction::triggered, game, &Snake::setDifficultyEasy);
+    connect(medium, &QAction::triggered, game, &Snake::setDifficultyMedium);
+    connect(hard, &QAction::triggered, game, &Snake::setDifficultyHard);
 }
 
 void App::makeColorMenu()
@@ -126,7 +132,7 @@ void App::continueGame()
 
 void App::startGame()
 {
-    menu_screen->continue_game->setVisible(true);
+    menu_screen->continue_game_btn->setVisible(true);
     statusBar()->show();
     menuBar()->setVisible(true);
     stacked_widget->setCurrentWidget(game);

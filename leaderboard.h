@@ -17,7 +17,7 @@ public:
     QGroupBox* group_box;
     QVBoxLayout* layout;
     QVBoxLayout* main_layout;
-    QPushButton* back_to_menu;
+    QPushButton* back_to_menu_btn;
 
     void addScore(QString score);
     void clearBoard();

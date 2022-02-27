@@ -13,11 +13,11 @@ class Settings : public QWidget
 {
     Q_OBJECT
 
-    QComboBox* difficulty;
-    QComboBox* background_color;
-    QComboBox* snake_color;
-    QComboBox* apple_color;
-    QPushButton* back_to_menu;
+    QComboBox* difficulty_cmb;
+    QComboBox* background_color_cmb;
+    QComboBox* snake_color_cmb;
+    QComboBox* apple_color_cmb;
+    QPushButton* back_to_menu_btn;
     QVBoxLayout* layout;
     QFormLayout* form_layout;
 

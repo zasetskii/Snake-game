@@ -13,11 +13,11 @@ class MenuScreen : public QWidget
 
     friend App;
 
-    QPushButton* continue_game;
-    QPushButton* start_game;
-    QPushButton* open_settings;
-    QPushButton* open_leaderboard;
-    QPushButton* quit_game;
+    QPushButton* continue_game_btn;
+    QPushButton* start_game_btn;
+    QPushButton* open_settings_btn;
+    QPushButton* open_leaderboard_btn;
+    QPushButton* quit_game_btn;
 
 public:
     explicit MenuScreen(QWidget *parent = nullptr);
