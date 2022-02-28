@@ -17,6 +17,7 @@ public:
 
     public:
     void addRecord(const QString& name, int score);
+    void removeRecord(int row);
     QString name(int row) const;
     int score(int row) const;
 

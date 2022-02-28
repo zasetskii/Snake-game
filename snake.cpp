@@ -3,6 +3,7 @@
 
 #define DELAY 100
 #define DOT_SIZE 10 //размер одной клетки поля
+#define LEADERBOARD_SIZE 10
 
 Snake::Snake(QWidget *parent)
     : QWidget(parent), m_size(300, 300)
@@ -184,7 +185,9 @@ void Snake::saveResult(const QString& name)
 {
     m_leaderboard_model->addRecord(name, m_score->text().toInt());
     m_leaderboard_model->sort(1, Qt::DescendingOrder);
-    const int size_of_board = std::min(m_leaderboard_model->rowCount(), 10);
+    if (m_leaderboard_model->rowCount() > LEADERBOARD_SIZE)
+        m_leaderboard_model->removeRecord(m_leaderboard_model->rowCount() - 1);
+    const int size_of_board = std::min(m_leaderboard_model->rowCount(), LEADERBOARD_SIZE);
     QJsonArray j_arr;
     for(int i = 0; i < size_of_board; ++i)
     {

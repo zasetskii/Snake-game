@@ -43,7 +43,6 @@ class Snake : public QWidget
     void startNewGame();
     void checkBorders();
     void checkApple();
-    //void gameOver(QPainter&);
     void gameOver();
     void showLoseMessage();
     void saveResult(const QString& name);

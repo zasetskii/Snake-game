@@ -14,6 +14,13 @@ void RecordListModel::addRecord(const QString &name, int score)
     endInsertRows();
 }
 
+void RecordListModel::removeRecord(int row)
+{
+    beginRemoveRows(QModelIndex(), row, row);
+    m_datalist.removeAt(row);
+    endRemoveRows();
+}
+
 QString RecordListModel::name(int row) const
 {
     return m_datalist.at(row).name;
