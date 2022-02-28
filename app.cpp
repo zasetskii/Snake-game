@@ -25,10 +25,10 @@ App::App(QWidget *parent) : QMainWindow(parent), m_size(300, 350)
     statusBar()->addWidget(game->m_score);
     makeDifficultyMenu();
     makeColorMenu();
-    game->setDifficultyMedium();
-    game->setRedBackground();
-    game->setSnakeGreen();
-    game->setAppleYellow();
+//    game->setDifficultyMedium();
+//    game->setRedBackground();
+//    game->setSnakeGreen();
+//    game->setAppleYellow();
 
     showMenu();
 

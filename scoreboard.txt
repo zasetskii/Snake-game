@@ -20,6 +20,10 @@
         "score": 9
     },
     {
+        "name": "chel",
+        "score": 9
+    },
+    {
         "name": "Name",
         "score": 8
     },
@@ -30,10 +34,6 @@
     {
         "name": "Vasyan",
         "score": 8
-    },
-    {
-        "name": "Name",
-        "score": 7
     },
     {
         "name": "Name",

@@ -6,6 +6,7 @@
 #include <QComboBox>
 #include <QVBoxLayout>
 #include <QFormLayout>
+#include <QSettings>
 
 #include "app.h"
 
@@ -13,6 +14,13 @@ class Settings : public QWidget
 {
     Q_OBJECT
 
+    friend App;
+
+public:
+    explicit Settings(QWidget *parent = nullptr);
+
+private:
+    QSettings m_settings;
     QComboBox* difficulty_cmb;
     QComboBox* background_color_cmb;
     QComboBox* snake_color_cmb;
@@ -20,12 +28,6 @@ class Settings : public QWidget
     QPushButton* back_to_menu_btn;
     QVBoxLayout* layout;
     QFormLayout* form_layout;
-
-    friend App;
-
-public:
-    explicit Settings(QWidget *parent = nullptr);
-
 };
 
 #endif // SETTINGS_H

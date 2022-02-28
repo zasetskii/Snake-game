@@ -6,7 +6,7 @@
 #define LEADERBOARD_SIZE 10
 
 Snake::Snake(QWidget *parent)
-    : QWidget(parent), m_size(300, 300)
+    : QWidget(parent), m_settings("Organization", "Snake"), m_size(300, 300)
 {
     m_head.load("../game/images/head.png");
 
@@ -22,6 +22,11 @@ Snake::Snake(QWidget *parent)
     setMinimumSize(m_size);
     setMaximumSize(m_size);
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+    setDifficulty(m_settings.value("difficulty", 1).toInt());
+    setBackgroundColor(m_settings.value("background", 2).toInt());
+    setSnakeColor(m_settings.value("snake", 0).toInt());
+    setAppleColor(m_settings.value("apple", 0).toInt());
 
     connect(m_timer, &QTimer::timeout, this, &Snake::onTimer);
 }
@@ -313,6 +318,7 @@ void Snake::setDifficulty(int index)
         setDifficultyHard();
         break;
     }
+    m_settings.setValue("difficulty", index);
 }
 
 void Snake::setGrayBackground()
@@ -344,6 +350,7 @@ void Snake::setBackgroundColor(int index)
         setRedBackground();
         break;
     }
+    m_settings.setValue("background", index);
 }
 
 void Snake::setSnakeGreen()
@@ -375,6 +382,7 @@ void Snake::setSnakeColor(int index)
         setSnakeWhite();
         break;
     }
+    m_settings.setValue("snake", index);
 }
 
 void Snake::setAppleYellow()
@@ -398,6 +406,7 @@ void Snake::setAppleColor(int index)
         setAppleGreen();
         break;
     }
+    m_settings.setValue("apple", index);
 }
 
 Snake::~Snake()

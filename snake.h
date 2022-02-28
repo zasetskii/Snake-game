@@ -22,6 +22,7 @@
 #include <QMessageBox>
 #include <QAbstractButton>
 #include <QInputDialog>
+#include <QSettings>
 
 #include "app.h"
 #include "recordlistmodel.h"
@@ -91,6 +92,7 @@ private:
     QLabel* m_score;
     QTimer* m_timer;
     QQueue<int> m_key_q;
+    QSettings m_settings;
 
     RecordListModel* m_leaderboard_model;
 
