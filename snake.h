@@ -19,6 +19,9 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QJsonArray>
+#include <QMessageBox>
+#include <QAbstractButton>
+#include <QInputDialog>
 
 #include "app.h"
 #include "recordlistmodel.h"
@@ -40,8 +43,10 @@ class Snake : public QWidget
     void startNewGame();
     void checkBorders();
     void checkApple();
-    void gameOver(QPainter&);
-    void saveResult();
+    //void gameOver(QPainter&);
+    void gameOver();
+    void showLoseMessage();
+    void saveResult(const QString& name);
     void setLeaderboard();
     RecordListModel* getLeaderboardModel();
     void generateApple();
@@ -92,7 +97,6 @@ private:
 
     int delay;
     Directions cur_direction;
-    bool is_game_over = false;
     bool is_growing = false;
     QSize m_size;
 };

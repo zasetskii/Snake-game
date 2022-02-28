@@ -1,5 +1,9 @@
 [
     {
+        "name": "Player1",
+        "score": 20
+    },
+    {
         "name": "Name",
         "score": 12
     },
@@ -8,11 +12,19 @@
         "score": 11
     },
     {
+        "name": "",
+        "score": 10
+    },
+    {
         "name": "Name",
         "score": 9
     },
     {
         "name": "Name",
+        "score": 8
+    },
+    {
+        "name": "Igaryok",
         "score": 8
     },
     {
@@ -26,17 +38,5 @@
     {
         "name": "Name",
         "score": 6
-    },
-    {
-        "name": "Name",
-        "score": 6
-    },
-    {
-        "name": "Name",
-        "score": 5
-    },
-    {
-        "name": "Name",
-        "score": 5
     }
 ]

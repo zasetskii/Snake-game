@@ -12,7 +12,6 @@ Snake::Snake(QWidget *parent)
     m_timer = new QTimer(this);
     m_score = new QLabel("0");
 
-    //m_leaderboard_model = new QStandardItemModel(0, 2, this);
     m_leaderboard_model = new RecordListModel(this);
 
     setLeaderboard();
@@ -37,8 +36,6 @@ void Snake::paintEvent(QPaintEvent* event)
         painter.drawImage(m_coordinates[i], m_dot);
     }
     painter.drawImage(m_apple_coordinates, m_apple);
-    if (is_game_over)
-        gameOver(painter);
 }
 
 void Snake::onTimer()
@@ -138,29 +135,54 @@ void Snake::checkBorders()
     if (m_coordinates[0].x() < 0 || m_coordinates[0].x() > this->width() - DOT_SIZE ||
         m_coordinates[0].y() < 0 || m_coordinates[0].y() > this->height() - DOT_SIZE)
     {
-        is_game_over = true;
+        gameOver();
     }
     for (int i = 1; i < m_coordinates.size(); ++i)
     {
         if (m_coordinates[0] == m_coordinates[i])
         {
-            is_game_over = true;
+            gameOver();
             break;
         }
     }
 }
 
-void Snake::gameOver(QPainter& painter)
+void Snake::gameOver()
 {
-    painter.drawText(width()/2, height()/2, "Game over!");
     m_timer->stop();
-    saveResult();
+    if (m_score->text().toInt() < m_leaderboard_model->score(m_leaderboard_model->rowCount() - 1))
+    {
+        showLoseMessage();
+    }
+    else
+    {
+        bool ok;
+        QString name = QInputDialog::getText(this, "Новый рекорд!", "Введите имя", QLineEdit::Normal, QString(),
+                                             &ok, Qt::WindowTitleHint | Qt::WindowSystemMenuHint| Qt::WindowCloseButtonHint);
+        if (ok)
+            saveResult(name);
+        emit escPressed();
+    }
     emit gameIsOver();
 }
 
-void Snake::saveResult()
+void Snake::showLoseMessage()
 {
-    m_leaderboard_model->addRecord("Name", m_score->text().toInt());
+    QMessageBox lose_message;
+    lose_message.setWindowTitle("Вы проиграли");
+    lose_message.setText("Хотите сыграть снова?");
+    QAbstractButton* play_again_btn = lose_message.addButton("Играть снова", QMessageBox::AcceptRole);
+    QAbstractButton* to_menu_btn = lose_message.addButton("В меню", QMessageBox::RejectRole);
+    lose_message.exec();
+    if (lose_message.clickedButton() == play_again_btn)
+        startNewGame();
+    else if (lose_message.clickedButton() == to_menu_btn)
+        emit escPressed();
+}
+
+void Snake::saveResult(const QString& name)
+{
+    m_leaderboard_model->addRecord(name, m_score->text().toInt());
     m_leaderboard_model->sort(1, Qt::DescendingOrder);
     const int size_of_board = std::min(m_leaderboard_model->rowCount(), 10);
     QJsonArray j_arr;
@@ -256,7 +278,6 @@ void Snake::startNewGame()
     generateApple();
 
     cur_direction = DIRECTION_LEFT;
-    is_game_over = false;
     m_timer->start(delay);
 }
 
