@@ -17,8 +17,8 @@ class Leaderboard : public QWidget
 public:
     explicit Leaderboard(QWidget *parent = nullptr);
 
-    QVBoxLayout* main_layout;
-    QPushButton* back_to_menu_btn;
+    QVBoxLayout* m_main_layout;
+    QPushButton* m_back_to_menu_btn;
 
     QTableView* m_table_view;
 

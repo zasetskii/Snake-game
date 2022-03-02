@@ -96,9 +96,9 @@ private:
 
     RecordListModel* m_leaderboard_model;
 
-    int delay;
-    Directions cur_direction;
-    bool is_growing = false;
+    int m_delay;
+    Directions m_cur_direction;
+    bool m_is_growing = false;
     QSize m_size;
 };
 #endif // SNAKE_H

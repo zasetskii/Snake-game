@@ -28,12 +28,11 @@ class App : public QMainWindow
     void openSettings();
     void showMenu();
 
-    //Сделать синглтоны
-    Snake* game;
-    QStackedWidget* stacked_widget;
-    MenuScreen* menu_screen;
-    Settings* settings_screen;
-    Leaderboard* leaderboard;
+    Snake* m_game;
+    QStackedWidget* m_stacked_widget;
+    MenuScreen* m_menu_screen;
+    Settings* m_settings_screen;
+    Leaderboard* m_leaderboard;
 
 public:
     explicit App(QWidget *parent = nullptr);

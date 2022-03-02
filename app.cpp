@@ -6,45 +6,45 @@
 
 App::App(QWidget *parent) : QMainWindow(parent), m_size(300, 350)
 {
-    game = new Snake(this);
-    menu_screen = new MenuScreen(this);
-    menu_screen->setObjectName("menu_screen");
-    stacked_widget = new QStackedWidget;
-    settings_screen = new Settings(this);
-    settings_screen->setObjectName("settings_screen");
-    leaderboard = new Leaderboard(this);
-    leaderboard->setObjectName("leaderboard");
+    m_game = new Snake(this);
+    m_menu_screen = new MenuScreen(this);
+    m_menu_screen->setObjectName("menu_screen");
+    m_stacked_widget = new QStackedWidget;
+    m_settings_screen = new Settings(this);
+    m_settings_screen->setObjectName("settings_screen");
+    m_leaderboard = new Leaderboard(this);
+    m_leaderboard->setObjectName("leaderboard");
 
     resize(m_size);
     setMinimumSize(m_size);
     setMaximumSize(m_size);
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    stacked_widget->addWidget(menu_screen);
-    stacked_widget->addWidget(settings_screen);
-    stacked_widget->addWidget(game);
-    stacked_widget->addWidget(leaderboard);
-    setCentralWidget(stacked_widget);
-    statusBar()->addWidget(game->m_score);
+    m_stacked_widget->addWidget(m_menu_screen);
+    m_stacked_widget->addWidget(m_settings_screen);
+    m_stacked_widget->addWidget(m_game);
+    m_stacked_widget->addWidget(m_leaderboard);
+    setCentralWidget(m_stacked_widget);
+    statusBar()->addWidget(m_game->m_score);
     statusBar()->setSizeGripEnabled(false);
     makeDifficultyMenu();
     makeColorMenu();
 
     showMenu();
 
-    connect(menu_screen->start_game_btn, &QPushButton::clicked, this, &App::startGame);
-    connect(menu_screen->open_leaderboard_btn, &QPushButton::clicked, this, &App::openLeaderboard);
-    connect(menu_screen->open_settings_btn, &QPushButton::clicked, this, &App::openSettings);
-    connect(menu_screen->quit_game_btn, &QPushButton::clicked, qApp, QApplication::quit);
-    connect(menu_screen->continue_game_btn, &QPushButton::clicked, this, &App::continueGame);
-    connect(settings_screen->difficulty_cmb, QOverload<int>::of(&QComboBox::currentIndexChanged), game, &Snake::setDifficulty);
-    connect(settings_screen->background_color_cmb, QOverload<int>::of(&QComboBox::currentIndexChanged), game, &Snake::setBackgroundColor);
-    connect(settings_screen->snake_color_cmb, QOverload<int>::of(&QComboBox::currentIndexChanged), game, &Snake::setSnakeColor);
-    connect(settings_screen->apple_color_cmb, QOverload<int>::of(&QComboBox::currentIndexChanged), game, &Snake::setAppleColor);
-    connect(settings_screen->back_to_menu_btn, &QPushButton::clicked, this, &App::showMenu);
-    connect(leaderboard->back_to_menu_btn, &QPushButton::clicked, this, &App::showMenu);
-    connect(game, &Snake::escPressed, this, &App::showMenu);
-    connect(game, &Snake::gameIsOver, menu_screen->continue_game_btn, &QPushButton::hide);
+    connect(m_menu_screen->m_start_game_btn, &QPushButton::clicked, this, &App::startGame);
+    connect(m_menu_screen->m_open_leaderboard_btn, &QPushButton::clicked, this, &App::openLeaderboard);
+    connect(m_menu_screen->m_open_settings_btn, &QPushButton::clicked, this, &App::openSettings);
+    connect(m_menu_screen->m_quit_game_btn, &QPushButton::clicked, qApp, QApplication::quit);
+    connect(m_menu_screen->m_continue_game_btn, &QPushButton::clicked, this, &App::continueGame);
+    connect(m_settings_screen->m_difficulty_cmb, QOverload<int>::of(&QComboBox::currentIndexChanged), m_game, &Snake::setDifficulty);
+    connect(m_settings_screen->m_background_color_cmb, QOverload<int>::of(&QComboBox::currentIndexChanged), m_game, &Snake::setBackgroundColor);
+    connect(m_settings_screen->m_snake_color_cmb, QOverload<int>::of(&QComboBox::currentIndexChanged), m_game, &Snake::setSnakeColor);
+    connect(m_settings_screen->m_apple_color_cmb, QOverload<int>::of(&QComboBox::currentIndexChanged), m_game, &Snake::setAppleColor);
+    connect(m_settings_screen->m_back_to_menu_btn, &QPushButton::clicked, this, &App::showMenu);
+    connect(m_leaderboard->m_back_to_menu_btn, &QPushButton::clicked, this, &App::showMenu);
+    connect(m_game, &Snake::escPressed, this, &App::showMenu);
+    connect(m_game, &Snake::gameIsOver, m_menu_screen->m_continue_game_btn, &QPushButton::hide);
 }
 
 void App::makeDifficultyMenu()
@@ -64,9 +64,9 @@ void App::makeDifficultyMenu()
     difficulty_menu->addAction(easy);
     difficulty_menu->addAction(medium);
     difficulty_menu->addAction(hard);
-    connect(easy, &QAction::triggered, game, &Snake::setDifficultyEasy);
-    connect(medium, &QAction::triggered, game, &Snake::setDifficultyMedium);
-    connect(hard, &QAction::triggered, game, &Snake::setDifficultyHard);
+    connect(easy, &QAction::triggered, m_game, &Snake::setDifficultyEasy);
+    connect(medium, &QAction::triggered, m_game, &Snake::setDifficultyMedium);
+    connect(hard, &QAction::triggered, m_game, &Snake::setDifficultyHard);
 }
 
 void App::makeColorMenu()
@@ -84,9 +84,9 @@ void App::makeColorMenu()
     background_colors->addAction(gray_background);
     background_colors->addAction(blue_background);
     background_colors->addAction(red_background);
-    connect(gray_background, &QAction::triggered, game, &Snake::setGrayBackground);
-    connect(blue_background, &QAction::triggered, game, &Snake::setBlueBackground);
-    connect(red_background, &QAction::triggered, game, &Snake::setRedBackground);
+    connect(gray_background, &QAction::triggered, m_game, &Snake::setGrayBackground);
+    connect(blue_background, &QAction::triggered, m_game, &Snake::setBlueBackground);
+    connect(red_background, &QAction::triggered, m_game, &Snake::setRedBackground);
     color_menu->addSeparator();
     QAction* green_snake = new QAction("Зелёная змея");
     QAction* black_snake = new QAction("Чёрная змея");
@@ -100,9 +100,9 @@ void App::makeColorMenu()
     snake_colors->addAction(green_snake);
     snake_colors->addAction(black_snake);
     snake_colors->addAction(white_snake);
-    connect(green_snake, &QAction::triggered, game, &Snake::setSnakeGreen);
-    connect(black_snake, &QAction::triggered, game, &Snake::setSnakeBlack);
-    connect(white_snake, &QAction::triggered, game, &Snake::setSnakeWhite);
+    connect(green_snake, &QAction::triggered, m_game, &Snake::setSnakeGreen);
+    connect(black_snake, &QAction::triggered, m_game, &Snake::setSnakeBlack);
+    connect(white_snake, &QAction::triggered, m_game, &Snake::setSnakeWhite);
 
     color_menu->addSeparator();
     QAction* yellow_apple = new QAction("Жёлтое яблоко");
@@ -114,47 +114,47 @@ void App::makeColorMenu()
     QActionGroup* apple_types = new QActionGroup(this);
     apple_types->addAction(yellow_apple);
     apple_types->addAction(green_apple);
-    connect(yellow_apple, &QAction::triggered, game, &Snake::setAppleYellow);
-    connect(green_apple, &QAction::triggered, game, &Snake::setAppleGreen);
+    connect(yellow_apple, &QAction::triggered, m_game, &Snake::setAppleYellow);
+    connect(green_apple, &QAction::triggered, m_game, &Snake::setAppleGreen);
 }
 
 void App::showMenu()
 {
     statusBar()->hide();
     menuBar()->setVisible(false);
-    stacked_widget->setCurrentWidget(menu_screen);
+    m_stacked_widget->setCurrentWidget(m_menu_screen);
 }
 
 void App::continueGame()
 {
-    game->m_timer->start(game->delay);
+    m_game->m_timer->start(m_game->m_delay);
     statusBar()->show();
     menuBar()->setVisible(true);
-    stacked_widget->setCurrentWidget(game);
+    m_stacked_widget->setCurrentWidget(m_game);
 }
 
 void App::startGame()
 {
-    menu_screen->continue_game_btn->setVisible(true);
+    m_menu_screen->m_continue_game_btn->setVisible(true);
     statusBar()->show();
     menuBar()->setVisible(true);
-    stacked_widget->setCurrentWidget(game);
-    game->startNewGame();
+    m_stacked_widget->setCurrentWidget(m_game);
+    m_game->startNewGame();
 }
 
 void App::openLeaderboard()
 {
     statusBar()->hide();
     menuBar()->setVisible(false);
-    leaderboard->m_table_view->setModel(game->getLeaderboardModel());
-    stacked_widget->setCurrentWidget(leaderboard);
+    m_leaderboard->m_table_view->setModel(m_game->getLeaderboardModel());
+    m_stacked_widget->setCurrentWidget(m_leaderboard);
 }
 
 void App::openSettings()
 {
     statusBar()->hide();
     menuBar()->setVisible(false);
-    stacked_widget->setCurrentWidget(settings_screen);
+    m_stacked_widget->setCurrentWidget(m_settings_screen);
 }
 
 

@@ -48,14 +48,14 @@ void Snake::onTimer()
 {
     processKeyPressed();
 
-    if (is_growing)
+    if (m_is_growing)
     {
         m_coordinates.push_back(m_coordinates[m_coordinates.size() - 1]);
         for (int i = m_coordinates.size() - 2; i != 0; --i)
         {
             m_coordinates[i] = m_coordinates[i - 1];
         }
-        is_growing = false;
+        m_is_growing = false;
     }
     else
     {
@@ -65,19 +65,19 @@ void Snake::onTimer()
         }
     }
 
-    if (cur_direction == DIRECTION_UP)
+    if (m_cur_direction == DIRECTION_UP)
     {
         m_coordinates[0].ry() -= DOT_SIZE;
     }
-    else if (cur_direction == DIRECTION_DOWN)
+    else if (m_cur_direction == DIRECTION_DOWN)
     {
         m_coordinates[0].ry() += DOT_SIZE;
     }
-    else if (cur_direction == DIRECTION_LEFT)
+    else if (m_cur_direction == DIRECTION_LEFT)
     {
         m_coordinates[0].rx() -= DOT_SIZE;
     }
-    else if (cur_direction == DIRECTION_RIGHT)
+    else if (m_cur_direction == DIRECTION_RIGHT)
     {
         m_coordinates[0].rx() += DOT_SIZE;
     }
@@ -116,20 +116,20 @@ void Snake::processKeyPressed()
     switch(m_key_q.dequeue())
     {
     case Qt::Key_Up:
-        if (cur_direction != DIRECTION_DOWN)
-            cur_direction = DIRECTION_UP;
+        if (m_cur_direction != DIRECTION_DOWN)
+            m_cur_direction = DIRECTION_UP;
         break;
     case Qt::Key_Down:
-        if (cur_direction != DIRECTION_UP)
-            cur_direction = DIRECTION_DOWN;
+        if (m_cur_direction != DIRECTION_UP)
+            m_cur_direction = DIRECTION_DOWN;
         break;
     case Qt::Key_Left:
-        if (cur_direction != DIRECTION_RIGHT)
-            cur_direction = DIRECTION_LEFT;
+        if (m_cur_direction != DIRECTION_RIGHT)
+            m_cur_direction = DIRECTION_LEFT;
         break;
     case Qt::Key_Right:
-        if (cur_direction != DIRECTION_LEFT)
-            cur_direction = DIRECTION_RIGHT;
+        if (m_cur_direction != DIRECTION_LEFT)
+            m_cur_direction = DIRECTION_RIGHT;
         break;
     default:
         break;
@@ -269,7 +269,7 @@ void Snake::checkApple()
     if (m_coordinates[0] == m_apple_coordinates)
     {
         generateApple();
-        is_growing = true;
+        m_is_growing = true;
         m_score->setNum(m_score->text().toInt() + 1);
     }
 }
@@ -285,23 +285,23 @@ void Snake::startNewGame()
     m_score->setNum(m_coordinates.size());
     generateApple();
 
-    cur_direction = DIRECTION_LEFT;
-    m_timer->start(delay);
+    m_cur_direction = DIRECTION_LEFT;
+    m_timer->start(m_delay);
 }
 
 void Snake::setDifficultyEasy()
 {
-    delay = 150;
+    m_delay = 150;
 }
 
 void Snake::setDifficultyMedium()
 {
-    delay = 100;
+    m_delay = 100;
 }
 
 void Snake::setDifficultyHard()
 {
-    delay = 50;
+    m_delay = 50;
 }
 
 void Snake::setDifficulty(int index)

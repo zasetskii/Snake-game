@@ -3,8 +3,8 @@
 Leaderboard::Leaderboard(QWidget *parent)
     : QWidget{parent}
 {
-    back_to_menu_btn = new QPushButton("Вернуться в меню");
-    main_layout = new QVBoxLayout(this);
+    m_back_to_menu_btn = new QPushButton("Вернуться в меню");
+    m_main_layout = new QVBoxLayout(this);
 
     m_table_view = new QTableView;
     m_table_view->setShowGrid(false);
@@ -22,9 +22,9 @@ Leaderboard::Leaderboard(QWidget *parent)
 
     QLabel* label = new QLabel("Доска рекордов");
     label->setFont(QFont("Helvetica [Cronyx]", 12, QFont::Bold));
-    main_layout->addWidget(label, 0, Qt::AlignCenter);
-    main_layout->addLayout(h_layout);
-    main_layout->addWidget(back_to_menu_btn);
+    m_main_layout->addWidget(label, 0, Qt::AlignCenter);
+    m_main_layout->addLayout(h_layout);
+    m_main_layout->addWidget(m_back_to_menu_btn);
 }
 
 void Leaderboard::paintEvent(QPaintEvent *event)

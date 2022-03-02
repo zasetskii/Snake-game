@@ -22,13 +22,13 @@ public:
 
 private:
     QSettings m_settings;
-    QComboBox* difficulty_cmb;
-    QComboBox* background_color_cmb;
-    QComboBox* snake_color_cmb;
-    QComboBox* apple_color_cmb;
-    QPushButton* back_to_menu_btn;
-    QVBoxLayout* layout;
-    QFormLayout* form_layout;
+    QComboBox* m_difficulty_cmb;
+    QComboBox* m_background_color_cmb;
+    QComboBox* m_snake_color_cmb;
+    QComboBox* m_apple_color_cmb;
+    QPushButton* m_back_to_menu_btn;
+    QVBoxLayout* m_layout;
+    QFormLayout* m_form_layout;
 
     // QWidget interface
 protected:
