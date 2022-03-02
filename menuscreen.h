@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QPainter>
 
 #include "app.h"
 
@@ -22,6 +23,10 @@ class MenuScreen : public QWidget
 public:
     explicit MenuScreen(QWidget *parent = nullptr);
 
+
+    // QWidget interface
+protected:
+    virtual void paintEvent(QPaintEvent *event);
 };
 
 #endif // MENUSCREEN_H

@@ -26,3 +26,12 @@ Settings::Settings(QWidget *parent)
     layout->addLayout(form_layout);
     layout->addWidget(back_to_menu_btn);
 }
+
+void Settings::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event);
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}

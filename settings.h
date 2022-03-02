@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include <QFormLayout>
 #include <QSettings>
+#include <QPainter>
 
 #include "app.h"
 
@@ -28,6 +29,10 @@ private:
     QPushButton* back_to_menu_btn;
     QVBoxLayout* layout;
     QFormLayout* form_layout;
+
+    // QWidget interface
+protected:
+    virtual void paintEvent(QPaintEvent *event);
 };
 
 #endif // SETTINGS_H

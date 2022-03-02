@@ -4,8 +4,10 @@
 #include <QWidget>
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QTableView>
 #include <QHeaderView>
+#include <QPainter>
 
 #include "app.h"
 
@@ -20,7 +22,9 @@ public:
 
     QTableView* m_table_view;
 
-signals:
+    // QWidget interface
+protected:
+    virtual void paintEvent(QPaintEvent *event);
 
 };
 

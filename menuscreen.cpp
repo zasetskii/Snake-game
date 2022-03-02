@@ -16,3 +16,12 @@ MenuScreen::MenuScreen(QWidget *parent)
     v_layout->addWidget(open_settings_btn);
     v_layout->addWidget(quit_game_btn);
 }
+
+void MenuScreen::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event);
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}

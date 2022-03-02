@@ -8,9 +8,12 @@ App::App(QWidget *parent) : QMainWindow(parent), m_size(300, 350)
 {
     game = new Snake(this);
     menu_screen = new MenuScreen(this);
+    menu_screen->setObjectName("menu_screen");
     stacked_widget = new QStackedWidget;
     settings_screen = new Settings(this);
+    settings_screen->setObjectName("settings_screen");
     leaderboard = new Leaderboard(this);
+    leaderboard->setObjectName("leaderboard");
 
     resize(m_size);
     setMinimumSize(m_size);
@@ -23,26 +26,23 @@ App::App(QWidget *parent) : QMainWindow(parent), m_size(300, 350)
     stacked_widget->addWidget(leaderboard);
     setCentralWidget(stacked_widget);
     statusBar()->addWidget(game->m_score);
+    statusBar()->setSizeGripEnabled(false);
     makeDifficultyMenu();
     makeColorMenu();
-//    game->setDifficultyMedium();
-//    game->setRedBackground();
-//    game->setSnakeGreen();
-//    game->setAppleYellow();
 
     showMenu();
 
-    connect(menu_screen->start_game_btn, &QPushButton::pressed, this, &App::startGame);
-    connect(menu_screen->open_leaderboard_btn, &QPushButton::pressed, this, &App::openLeaderboard);
-    connect(menu_screen->open_settings_btn, &QPushButton::pressed, this, &App::openSettings);
-    connect(menu_screen->quit_game_btn, &QPushButton::pressed, qApp, QApplication::quit);
-    connect(menu_screen->continue_game_btn, &QPushButton::pressed, this, &App::continueGame);
+    connect(menu_screen->start_game_btn, &QPushButton::clicked, this, &App::startGame);
+    connect(menu_screen->open_leaderboard_btn, &QPushButton::clicked, this, &App::openLeaderboard);
+    connect(menu_screen->open_settings_btn, &QPushButton::clicked, this, &App::openSettings);
+    connect(menu_screen->quit_game_btn, &QPushButton::clicked, qApp, QApplication::quit);
+    connect(menu_screen->continue_game_btn, &QPushButton::clicked, this, &App::continueGame);
     connect(settings_screen->difficulty_cmb, QOverload<int>::of(&QComboBox::currentIndexChanged), game, &Snake::setDifficulty);
     connect(settings_screen->background_color_cmb, QOverload<int>::of(&QComboBox::currentIndexChanged), game, &Snake::setBackgroundColor);
     connect(settings_screen->snake_color_cmb, QOverload<int>::of(&QComboBox::currentIndexChanged), game, &Snake::setSnakeColor);
     connect(settings_screen->apple_color_cmb, QOverload<int>::of(&QComboBox::currentIndexChanged), game, &Snake::setAppleColor);
-    connect(settings_screen->back_to_menu_btn, &QPushButton::pressed, this, &App::showMenu);
-    connect(leaderboard->back_to_menu_btn, &QPushButton::pressed, this, &App::showMenu);
+    connect(settings_screen->back_to_menu_btn, &QPushButton::clicked, this, &App::showMenu);
+    connect(leaderboard->back_to_menu_btn, &QPushButton::clicked, this, &App::showMenu);
     connect(game, &Snake::escPressed, this, &App::showMenu);
     connect(game, &Snake::gameIsOver, menu_screen->continue_game_btn, &QPushButton::hide);
 }

@@ -16,6 +16,14 @@
         "score": 10
     },
     {
+        "name": "qwerty",
+        "score": 10
+    },
+    {
+        "name": "aaaaa",
+        "score": 10
+    },
+    {
         "name": "Name",
         "score": 9
     },
@@ -30,13 +38,5 @@
     {
         "name": "Igaryok",
         "score": 8
-    },
-    {
-        "name": "Vasyan",
-        "score": 8
-    },
-    {
-        "name": "Name",
-        "score": 7
     }
 ]
