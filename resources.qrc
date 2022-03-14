@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>images/apple_green.png</file>
+        <file>images/apple_yellow.png</file>
+        <file>images/dot_black.png</file>
+        <file>images/dot_green.png</file>
+        <file>images/dot_white.png</file>
+        <file>images/head.png</file>
+    </qresource>
+    <qresource prefix="/scoreboard">
+        <file>scoreboard.txt</file>
+    </qresource>
+    <qresource prefix="/style">
+        <file>stylesheet.qss</file>
+    </qresource>
+</RCC>

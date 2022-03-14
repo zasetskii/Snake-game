@@ -33,7 +33,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES += \
     images/apple.png \
     images/apple_krasivoe.png \
-    images/dot.png \
-    images/dot_black.png \
-    images/dot_white.png \
-    images/head.png
+    images/dot.png
+
+RESOURCES += \
+    resources.qrc

@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 
     App w;
 
-    QFile stylesheet_file("../game/stylesheet.qss");
+    QFile stylesheet_file(":/style/stylesheet.qss");
     stylesheet_file.open(QFile::ReadOnly);
     QString stylesheet = QLatin1String(stylesheet_file.readAll());
     a.setStyleSheet(stylesheet);

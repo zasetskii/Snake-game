@@ -8,7 +8,7 @@
 Snake::Snake(QWidget *parent)
     : QWidget(parent), m_settings("Organization", "Snake"), m_size(300, 300)
 {
-    m_head.load("../game/images/head.png");
+    m_head.load(":/images/images/head.png");
 
     m_timer = new QTimer(this);
     m_score = new QLabel("0");
@@ -204,7 +204,7 @@ void Snake::saveResult(const QString& name)
         j_arr.append(jRecord);
     }
     QJsonDocument j_document(j_arr);
-    QFile file("../game/scoreboard.txt");
+    QFile file(":/scoreboard/scoreboard.txt");
     if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
     {
         file.write(j_document.toJson());
@@ -218,7 +218,7 @@ void Snake::saveResult(const QString& name)
 
 void Snake::setLeaderboard()
 {
-    QFile scoreboard("../game/scoreboard.txt");
+    QFile scoreboard(":/scoreboard/scoreboard.txt");
     if (scoreboard.open(QIODevice::ReadOnly))
     {
         QByteArray data = scoreboard.readAll();
@@ -357,17 +357,17 @@ void Snake::setBackgroundColor(int index)
 
 void Snake::setSnakeGreen()
 {
-    m_dot.load("../game/images/dot_green.png");
+    m_dot.load(":/images/images/dot_green.png");
 }
 
 void Snake::setSnakeBlack()
 {
-    m_dot.load("../game/images/dot_black.png");
+    m_dot.load(":/images/images/dot_black.png");
 }
 
 void Snake::setSnakeWhite()
 {
-    m_dot.load("../game/images/dot_white.png");
+    m_dot.load(":/images/images/dot_white.png");
 }
 
 void Snake::setSnakeColor(int index)
@@ -389,12 +389,12 @@ void Snake::setSnakeColor(int index)
 
 void Snake::setAppleYellow()
 {
-    m_apple.load("../game/images/apple_yellow.png");
+    m_apple.load(":/images/images/apple_yellow.png");
 }
 
 void Snake::setAppleGreen()
 {
-    m_apple.load("../game/images/apple_green.png");
+    m_apple.load(":/images/images/apple_green.png");
 }
 
 void Snake::setAppleColor(int index)
