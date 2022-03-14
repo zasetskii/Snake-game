@@ -8,6 +8,10 @@
         "score": 12
     },
     {
+        "name": "Nobody",
+        "score": 12
+    },
+    {
         "name": "Name",
         "score": 11
     },
@@ -33,10 +37,6 @@
     },
     {
         "name": "Name",
-        "score": 8
-    },
-    {
-        "name": "Igaryok",
         "score": 8
     }
 ]
