@@ -84,8 +84,6 @@ void Snake::onTimer()
     else
         return;
 
-
-
     checkBorders();
     checkApple();
     repaint();
@@ -102,11 +100,15 @@ void Snake::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Space:
         startNewGame();
         return;
+    case Qt::Key_Up:
+    case Qt::Key_Down:
+    case Qt::Key_Left:
+    case Qt::Key_Right:
+        m_key_q.enqueue(event->key());
+        break;
     default:
         break;
     }
-
-    m_key_q.enqueue(event->key());
 }
 
 void Snake::processKeyPressed()

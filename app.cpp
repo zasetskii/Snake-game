@@ -87,6 +87,7 @@ void App::makeColorMenu()
     connect(gray_background, &QAction::triggered, m_game, &Snake::setGrayBackground);
     connect(blue_background, &QAction::triggered, m_game, &Snake::setBlueBackground);
     connect(red_background, &QAction::triggered, m_game, &Snake::setRedBackground);
+
     color_menu->addSeparator();
     QAction* green_snake = new QAction("Зелёная змея");
     QAction* black_snake = new QAction("Чёрная змея");
