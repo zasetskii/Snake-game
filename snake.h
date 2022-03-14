@@ -48,7 +48,7 @@ class Snake : public QWidget
     void showLoseMessage();
     void saveResult(const QString& name);
     void setLeaderboard();
-    RecordListModel* getLeaderboardModel();
+    RecordListModel* getLeaderboardModel() const;
     void generateApple();
     void processKeyPressed();
 

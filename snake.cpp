@@ -237,7 +237,7 @@ void Snake::setLeaderboard()
     scoreboard.close();
 }
 
-RecordListModel* Snake::getLeaderboardModel()
+RecordListModel* Snake::getLeaderboardModel() const
 {
     return m_leaderboard_model;
 }
