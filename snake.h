@@ -22,7 +22,6 @@
 #include <QMessageBox>
 #include <QAbstractButton>
 #include <QInputDialog>
-#include <QSettings>
 
 #include "app.h"
 #include "recordlistmodel.h"
@@ -63,19 +62,19 @@ signals:
 
 private slots:
     void onTimer();
-    void setDifficulty(int index);
+    //void setDifficulty(int index);
     void setDifficultyEasy();
     void setDifficultyMedium();
     void setDifficultyHard();
-    void setBackgroundColor(int index);
+    //void setBackgroundColor(int index);
     void setGrayBackground();
     void setBlueBackground();
     void setRedBackground();
-    void setSnakeColor(int index);
+    //void setSnakeColor(int index);
     void setSnakeGreen();
     void setSnakeBlack();
     void setSnakeWhite();
-    void setAppleColor(int index);
+    //void setAppleColor(int index);
     void setAppleYellow();
     void setAppleGreen();
 
@@ -92,7 +91,6 @@ private:
     QLabel* m_score;
     QTimer* m_timer;
     QQueue<int> m_key_q;
-    QSettings m_settings;
 
     RecordListModel* m_leaderboard_model;
 

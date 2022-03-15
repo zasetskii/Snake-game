@@ -6,7 +6,7 @@
 #define LEADERBOARD_SIZE 10
 
 Snake::Snake(QWidget *parent)
-    : QWidget(parent), m_settings("Organization", "Snake"), m_size(300, 300)
+    : QWidget(parent), m_size(300, 300)
 {
     m_head.load(":/images/images/head.png");
 
@@ -23,10 +23,10 @@ Snake::Snake(QWidget *parent)
     setMaximumSize(m_size);
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    setDifficulty(m_settings.value("difficulty", 1).toInt());
-    setBackgroundColor(m_settings.value("background", 2).toInt());
-    setSnakeColor(m_settings.value("snake", 0).toInt());
-    setAppleColor(m_settings.value("apple", 0).toInt());
+    //setDifficulty(m_settings.value("difficulty", 1).toInt());
+    //setBackgroundColor(m_settings.value("background", 2).toInt());
+    //setSnakeColor(m_settings.value("snake", 0).toInt());
+    //setAppleColor(m_settings.value("apple", 0).toInt());
 
     connect(m_timer, &QTimer::timeout, this, &Snake::onTimer);
 }
@@ -306,22 +306,22 @@ void Snake::setDifficultyHard()
     m_delay = 50;
 }
 
-void Snake::setDifficulty(int index)
-{
-    switch (index)
-    {
-    case 0:
-        setDifficultyEasy();
-        break;
-    case 1:
-        setDifficultyMedium();
-        break;
-    case 2:
-        setDifficultyHard();
-        break;
-    }
-    m_settings.setValue("difficulty", index);
-}
+//void Snake::setDifficulty(int index)
+//{
+//    switch (index)
+//    {
+//    case 0:
+//        setDifficultyEasy();
+//        break;
+//    case 1:
+//        setDifficultyMedium();
+//        break;
+//    case 2:
+//        setDifficultyHard();
+//        break;
+//    }
+//    m_settings.setValue("difficulty", index);
+//}
 
 void Snake::setGrayBackground()
 {
@@ -338,22 +338,22 @@ void Snake::setRedBackground()
     setPalette(QPalette(QPalette::Background, Qt::darkRed));
 }
 
-void Snake::setBackgroundColor(int index)
-{
-    switch (index)
-    {
-    case 0:
-        setGrayBackground();
-        break;
-    case 1:
-        setBlueBackground();
-        break;
-    case 2:
-        setRedBackground();
-        break;
-    }
-    m_settings.setValue("background", index);
-}
+//void Snake::setBackgroundColor(int index)
+//{
+//    switch (index)
+//    {
+//    case 0:
+//        setGrayBackground();
+//        break;
+//    case 1:
+//        setBlueBackground();
+//        break;
+//    case 2:
+//        setRedBackground();
+//        break;
+//    }
+//    m_settings.setValue("background", index);
+//}
 
 void Snake::setSnakeGreen()
 {
@@ -370,22 +370,22 @@ void Snake::setSnakeWhite()
     m_dot.load(":/images/images/dot_white.png");
 }
 
-void Snake::setSnakeColor(int index)
-{
-    switch (index)
-    {
-    case 0:
-        setSnakeGreen();
-        break;
-    case 1:
-        setSnakeBlack();
-        break;
-    case 2:
-        setSnakeWhite();
-        break;
-    }
-    m_settings.setValue("snake", index);
-}
+//void Snake::setSnakeColor(int index)
+//{
+//    switch (index)
+//    {
+//    case 0:
+//        setSnakeGreen();
+//        break;
+//    case 1:
+//        setSnakeBlack();
+//        break;
+//    case 2:
+//        setSnakeWhite();
+//        break;
+//    }
+//    m_settings.setValue("snake", index);
+//}
 
 void Snake::setAppleYellow()
 {
@@ -397,19 +397,19 @@ void Snake::setAppleGreen()
     m_apple.load(":/images/images/apple_green.png");
 }
 
-void Snake::setAppleColor(int index)
-{
-    switch (index)
-    {
-    case 0:
-        setAppleYellow();
-        break;
-    case 1:
-        setAppleGreen();
-        break;
-    }
-    m_settings.setValue("apple", index);
-}
+//void Snake::setAppleColor(int index)
+//{
+//    switch (index)
+//    {
+//    case 0:
+//        setAppleYellow();
+//        break;
+//    case 1:
+//        setAppleGreen();
+//        break;
+//    }
+//    m_settings.setValue("apple", index);
+//}
 
 Snake::~Snake()
 {

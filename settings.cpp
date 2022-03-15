@@ -1,7 +1,7 @@
 #include "settings.h"
 
 Settings::Settings(QWidget *parent)
-    : QWidget{parent}, m_settings("Organization", "Snake")
+    : QWidget{parent}
 {
     m_difficulty_cmb = new QComboBox;
     m_background_color_cmb = new QComboBox;
@@ -16,13 +16,9 @@ Settings::Settings(QWidget *parent)
     m_form_layout->addRow("Цвет змеи", m_snake_color_cmb);
     m_form_layout->addRow("Вид яблока", m_apple_color_cmb);
     m_difficulty_cmb->addItems({"Легко", "Средне", "Сложно"});
-    m_difficulty_cmb->setCurrentIndex(m_settings.value("difficulty", 1).toInt());
     m_background_color_cmb->addItems({"Серый", "Синий", "Красный"});
-    m_background_color_cmb->setCurrentIndex(m_settings.value("background", 2).toInt());
     m_snake_color_cmb->addItems({"Зелёный", "Чёрный", "Белый"});
-    m_snake_color_cmb->setCurrentIndex(m_settings.value("snake", 0).toInt());
     m_apple_color_cmb->addItems({"Жёлтый", "Зелёный"});
-    m_apple_color_cmb->setCurrentIndex(m_settings.value("apple", 0).toInt());
     m_layout->addLayout(m_form_layout);
     m_layout->addWidget(m_back_to_menu_btn);
 }
