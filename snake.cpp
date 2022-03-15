@@ -158,7 +158,7 @@ void Snake::checkBorders()
 void Snake::gameOver()
 {
     m_timer->stop();
-    if (m_score->text().toInt() < m_leaderboard_model->score(m_leaderboard_model->rowCount() - 1))
+    if (m_leaderboard_model->rowCount() > 0 && m_score->text().toInt() < m_leaderboard_model->score(m_leaderboard_model->rowCount() - 1))
     {
         showLoseMessage();
     }
@@ -204,7 +204,7 @@ void Snake::saveResult(const QString& name)
         j_arr.append(jRecord);
     }
     QJsonDocument j_document(j_arr);
-    QFile file(":/scoreboard/scoreboard.txt");
+    QFile file("scoreboard.txt");
     if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
     {
         file.write(j_document.toJson());
@@ -218,8 +218,8 @@ void Snake::saveResult(const QString& name)
 
 void Snake::setLeaderboard()
 {
-    QFile scoreboard(":/scoreboard/scoreboard.txt");
-    if (scoreboard.open(QIODevice::ReadOnly))
+    QFile scoreboard("scoreboard.txt");
+    if (scoreboard.open(QIODevice::ReadWrite))
     {
         QByteArray data = scoreboard.readAll();
         QJsonDocument document = QJsonDocument::fromJson(data);

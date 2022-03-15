@@ -7,9 +7,6 @@
         <file>images/dot_white.png</file>
         <file>images/head.png</file>
     </qresource>
-    <qresource prefix="/scoreboard">
-        <file>scoreboard.txt</file>
-    </qresource>
     <qresource prefix="/style">
         <file>stylesheet.qss</file>
     </qresource>
