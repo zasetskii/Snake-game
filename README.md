@@ -18,6 +18,6 @@
 Нажатые клавиши стрелок добавляются в очередь `m_key_q` и обрабатываются в слоте таймера по одной за раз.
 
 ## Скачать
-https://disk.yandex.ru/d/F0PbKKBRXOhXKQ
+https://disk.yandex.ru/d/zXRZAfaSwTRrwA
 1. Распаковать
 2. Запустить game.exe
